@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = "github.com/JustDean/whisp-nodes-manager/internal/gateway_api";
+
+service GatewayApi {
+    rpc HostChat(CreateChatRequest) returns (ChatConnectionDataResponse) {}
+    rpc DropChat(ChatCredentials) returns (DropChatResponse) {}
+    rpc ListChats(ListChatsRequest) returns (ListChatsResponse) {}
+    rpc JoinChat(ChatCredentials) returns (ChatConnectionDataResponse) {}
+}
+
+message CreateChatRequest{
+    string name = 1;
+    string password = 2;
+    string owner_username = 3;
+}
+message ChatConnectionDataResponse{
+    string token = 1;
+    string endpoint = 2;
+}
+message ChatCredentials {
+    string id = 1;
+    string password = 2;
+}
+message ChatData {
+    string id = 1;
+    string name = 2;
+    string owner_username = 3;
+}
+message DropChatResponse{}
+message ListChatsRequest{}
+message ListChatsResponse {
+    repeated ChatData chats = 1; 
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option go_package = "github.com/JustDean/whisp-nodes-manager/internal/node_api";
+
+service NodeApi {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc Unregister(UnregisterRequest) returns (UnregisterResponse) {}
+}
+
+
+message RegisterRequest{
+    string internal_api_endpoint = 1;
+    string public_endpoint = 2;
+}
+
+message RegisterResponse{
+    string node_id = 1;
+    string secret = 2;
+}
+
+message UnregisterRequest{
+    string node_id = 1;
+}
+
+message UnregisterResponse{}

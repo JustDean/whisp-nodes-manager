@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package = "github.com/JustDean/whisp-nodes-manager/internal/nodes_manager";
+
+service WhispNode {
+    rpc HostChat(HostChatRequest) returns (Blank) {}
+    rpc DropChat(DropChatRequest) returns (Blank) {}
+    rpc NodeInfo(Blank) returns (NodeInfoResponse) {} // ping
+}
+
+message Blank {}
+
+message HostChatRequest {
+    string chat_id = 1;
+    string owner_username = 2;
+}
+
+message DropChatRequest {
+    string chat_id = 1;
+}
+
+message NodeInfoResponse {
+    repeated Chat chats = 1;
+}
+
+message Chat {
+    string id = 1;
+    uint32 number_of_clients = 2; 
+}
