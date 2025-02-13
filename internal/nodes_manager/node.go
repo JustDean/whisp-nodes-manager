@@ -50,13 +50,13 @@ func (n *node) dropChat(chatid pkg.StringUUID) error {
 }
 
 func (n *node) run(ctx context.Context) {
-	ticker := time.NewTicker(time.Second * 10)
+	ticker := time.NewTicker(time.Second * 30)
 	defer ticker.Stop()
 run:
 	for {
 		select {
 		case <-ticker.C:
-			ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 			// TODO handle response
 			_, err := NewWhispNodeClient(n.nodeConn).NodeInfo(ctx, &Blank{})
 			if err != nil {

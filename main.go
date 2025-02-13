@@ -21,7 +21,7 @@ func main() {
 	nodeApiServer, err := node_api.SetServer(
 		pkg.GrpcServerConfig{
 			Host: pkg.GetEnv("NODE_API_HOST", "localhost"),
-			Port: pkg.GetEnv("NODE_API_PORT", "9999"),
+			Port: pkg.GetEnv("NODE_API_PORT", "7777"),
 		},
 		manager,
 	)
@@ -31,7 +31,7 @@ func main() {
 	gatewayApiServer, err := gateway_api.SetServer(
 		pkg.GrpcServerConfig{
 			Host: pkg.GetEnv("NODE_API_HOST", "localhost"),
-			Port: pkg.GetEnv("NODE_API_PORT", "8888"),
+			Port: pkg.GetEnv("NODE_API_PORT", "7000"),
 		},
 		manager,
 	)

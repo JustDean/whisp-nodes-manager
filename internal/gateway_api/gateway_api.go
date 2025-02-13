@@ -56,8 +56,8 @@ func (server *GatewayApi) ListChats(ctx context.Context, data *ListChatsRequest)
 	return &ListChatsResponse{Chats: res}, nil
 }
 
-func (server *GatewayApi) JoinChat(ctx context.Context, data *ChatCredentials) (*ChatConnectionDataResponse, error) {
-	token, connAddr, err := server.manager.JoinChat(data.GetId(), data.GetPassword())
+func (server *GatewayApi) JoinChat(ctx context.Context, data *JoinChatRequest) (*ChatConnectionDataResponse, error) {
+	token, connAddr, err := server.manager.JoinChat(data.GetUsername(), data.GetChatId(), data.GetChatPassword())
 	if err != nil {
 		return &ChatConnectionDataResponse{}, err
 	}

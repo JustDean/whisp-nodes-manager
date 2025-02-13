@@ -6,7 +6,7 @@ service GatewayApi {
     rpc HostChat(CreateChatRequest) returns (ChatConnectionDataResponse) {}
     rpc DropChat(ChatCredentials) returns (DropChatResponse) {}
     rpc ListChats(ListChatsRequest) returns (ListChatsResponse) {}
-    rpc JoinChat(ChatCredentials) returns (ChatConnectionDataResponse) {}
+    rpc JoinChat(JoinChatRequest) returns (ChatConnectionDataResponse) {}
 }
 
 message CreateChatRequest{
@@ -26,6 +26,11 @@ message ChatData {
     string id = 1;
     string name = 2;
     string owner_username = 3;
+}
+message JoinChatRequest{
+    string username = 1;
+    string chat_id = 2;
+    string chat_password = 3;
 }
 message DropChatResponse{}
 message ListChatsRequest{}

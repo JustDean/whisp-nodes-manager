@@ -32,7 +32,7 @@ type GatewayApiClient interface {
 	HostChat(ctx context.Context, in *CreateChatRequest, opts ...grpc.CallOption) (*ChatConnectionDataResponse, error)
 	DropChat(ctx context.Context, in *ChatCredentials, opts ...grpc.CallOption) (*DropChatResponse, error)
 	ListChats(ctx context.Context, in *ListChatsRequest, opts ...grpc.CallOption) (*ListChatsResponse, error)
-	JoinChat(ctx context.Context, in *ChatCredentials, opts ...grpc.CallOption) (*ChatConnectionDataResponse, error)
+	JoinChat(ctx context.Context, in *JoinChatRequest, opts ...grpc.CallOption) (*ChatConnectionDataResponse, error)
 }
 
 type gatewayApiClient struct {
@@ -73,7 +73,7 @@ func (c *gatewayApiClient) ListChats(ctx context.Context, in *ListChatsRequest, 
 	return out, nil
 }
 
-func (c *gatewayApiClient) JoinChat(ctx context.Context, in *ChatCredentials, opts ...grpc.CallOption) (*ChatConnectionDataResponse, error) {
+func (c *gatewayApiClient) JoinChat(ctx context.Context, in *JoinChatRequest, opts ...grpc.CallOption) (*ChatConnectionDataResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ChatConnectionDataResponse)
 	err := c.cc.Invoke(ctx, GatewayApi_JoinChat_FullMethodName, in, out, cOpts...)
@@ -90,7 +90,7 @@ type GatewayApiServer interface {
 	HostChat(context.Context, *CreateChatRequest) (*ChatConnectionDataResponse, error)
 	DropChat(context.Context, *ChatCredentials) (*DropChatResponse, error)
 	ListChats(context.Context, *ListChatsRequest) (*ListChatsResponse, error)
-	JoinChat(context.Context, *ChatCredentials) (*ChatConnectionDataResponse, error)
+	JoinChat(context.Context, *JoinChatRequest) (*ChatConnectionDataResponse, error)
 	mustEmbedUnimplementedGatewayApiServer()
 }
 
@@ -110,7 +110,7 @@ func (UnimplementedGatewayApiServer) DropChat(context.Context, *ChatCredentials)
 func (UnimplementedGatewayApiServer) ListChats(context.Context, *ListChatsRequest) (*ListChatsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListChats not implemented")
 }
-func (UnimplementedGatewayApiServer) JoinChat(context.Context, *ChatCredentials) (*ChatConnectionDataResponse, error) {
+func (UnimplementedGatewayApiServer) JoinChat(context.Context, *JoinChatRequest) (*ChatConnectionDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method JoinChat not implemented")
 }
 func (UnimplementedGatewayApiServer) mustEmbedUnimplementedGatewayApiServer() {}
@@ -189,7 +189,7 @@ func _GatewayApi_ListChats_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _GatewayApi_JoinChat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ChatCredentials)
+	in := new(JoinChatRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func _GatewayApi_JoinChat_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: GatewayApi_JoinChat_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GatewayApiServer).JoinChat(ctx, req.(*ChatCredentials))
+		return srv.(GatewayApiServer).JoinChat(ctx, req.(*JoinChatRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

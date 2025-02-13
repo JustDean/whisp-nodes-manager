@@ -35,9 +35,10 @@ func (nm NodesManager) UnregisterNode(nodeid pkg.StringUUID) {
 	nm.nr.remove(nodeid)
 }
 
-func (nm NodesManager) generateToken(chatid pkg.StringUUID) string {
+func (nm NodesManager) generateToken(chatid pkg.StringUUID, username string) string {
 	encoder := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"chatid": string(chatid),
+		"ChatId":   string(chatid),
+		"Username": username,
 	})
 	token, _ := encoder.SignedString([]byte(nm.secret))
 	return token
@@ -49,7 +50,7 @@ func (nm NodesManager) HostChat(chatName, chatPassword, ownerName string) (strin
 	if err != nil {
 		return "", "", err
 	}
-	return nm.generateToken(newChat.Id), node.publicApiEndpoint, nil
+	return nm.generateToken(newChat.Id, ownerName), node.publicApiEndpoint, nil
 }
 
 func (nm NodesManager) DropChat(chatid pkg.StringUUID, password string) {
@@ -63,7 +64,7 @@ func (nm NodesManager) ListChats() []ChatData {
 	return nm.cr.listChats()
 }
 
-func (nm NodesManager) JoinChat(chatid, password string) (string, string, error) {
+func (nm NodesManager) JoinChat(username, chatid, password string) (string, string, error) {
 	chat, ok := nm.cr.getChat(pkg.StringUUID(chatid))
 	if !ok {
 		return "", "", CREDENTIALS_ERROR
@@ -71,7 +72,7 @@ func (nm NodesManager) JoinChat(chatid, password string) (string, string, error)
 	if password != chat.password {
 		return "", "", CREDENTIALS_ERROR
 	}
-	return nm.generateToken(chat.Id), chat.node.publicApiEndpoint, nil
+	return nm.generateToken(chat.Id, username), chat.node.publicApiEndpoint, nil
 }
 
 func SetupNodesManager(config Config) *NodesManager {
